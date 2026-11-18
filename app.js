@@ -18,48 +18,48 @@ const products = [
         ],
         storages: ["256GB", "512GB", "1TB"],
         specs: ["A19 Pro chip", "6.9 dyuym Super Retina XDR", "48MP Pro kamera tizimi", "Titan korpus"]
-    },
-    // script.js ga qo'shimcha iPhone modellari
-const extraIphones = [
-    {
-        id: 9,
-        name: "iPhone 17 Air",
-        category: "iPhone",
-        price: 15200000,
-        oldPrice: 16400000,
-        discount: 7,
-        isNew: true,
-        isTrending: true,
-        isDiscount: true,
-        image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80",
-        colors: [
-            { name: "Starlight", hex: "#fbf7f4", img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80" },
-            { name: "Space Gray", hex: "#6e6e73", img: "https://images.unsplash.com/photo-1695048066261-0d3c690d7943?auto=format&fit=crop&w=800&q=80" }
-        ],
-        storages: ["128GB", "256GB", "512GB"],
-        specs: ["Nihoyatda yupqa dizayn", "A19 chip", "OLED ekran"]
-    },
-    {
-        id: 10,
-        name: "iPhone 16 Pro Max",
-        category: "iPhone",
-        price: 15900000,
-        oldPrice: 17200000,
-        discount: 8,
-        isNew: false,
-        isTrending: true,
-        isDiscount: true,
-        image: "https://images.unsplash.com/photo-1695048066261-0d3c690d7943?auto=format&fit=crop&w=800&q=80",
-        colors: [
-            { name: "Desert Titanium", hex: "#bfa383", img: "https://images.unsplash.com/photo-1695048066261-0d3c690d7943?auto=format&fit=crop&w=800&q=80" }
-        ],
-        storages: ["256GB", "512GB", "1TB"],
-        specs: ["A18 Pro chip", "6.9 dyuym ekran", "5x optik zoom"]
-    }
-];
+ },
+//     // script.js ga qo'shimcha iPhone modellari
+// const extraIphones = [
+//     {
+//         id: 9,
+//         name: "iPhone 17 Air",
+//         category: "iPhone",
+//         price: 15200000,
+//         oldPrice: 16400000,
+//         discount: 7,
+//         isNew: true,
+//         isTrending: true,
+//         isDiscount: true,
+//         image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80",
+//         colors: [
+//             { name: "Starlight", hex: "#fbf7f4", img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80" },
+//             { name: "Space Gray", hex: "#6e6e73", img: "https://images.unsplash.com/photo-1695048066261-0d3c690d7943?auto=format&fit=crop&w=800&q=80" }
+//         ],
+//         storages: ["128GB", "256GB", "512GB"],
+//         specs: ["Nihoyatda yupqa dizayn", "A19 chip", "OLED ekran"]
+//     },
+//     {
+//         id: 10,
+//         name: "iPhone 16 Pro Max",
+//         category: "iPhone",
+//         price: 15900000,
+//         oldPrice: 17200000,
+//         discount: 8,
+//         isNew: false,
+//         isTrending: true,
+//         isDiscount: true,
+//         image: "https://images.unsplash.com/photo-1695048066261-0d3c690d7943?auto=format&fit=crop&w=800&q=80",
+//         colors: [
+//             { name: "Desert Titanium", hex: "#bfa383", img: "https://images.unsplash.com/photo-1695048066261-0d3c690d7943?auto=format&fit=crop&w=800&q=80" }
+//         ],
+//         storages: ["256GB", "512GB", "1TB"],
+//         specs: ["A18 Pro chip", "6.9 dyuym ekran", "5x optik zoom"]
+//     }
+// ];
 
-// products massiviga qo'shish uchun:
-// products.push(...extraIphones);
+// // products massiviga qo'shish uchun:
+// // products.push(...extraIphones);
     {
         id: 2,
         name: "iPhone 17 Pro",
