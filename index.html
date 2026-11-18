@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Store Andijon | Rasmiy Internet Do‘kon</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header id="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#" class="nav-logo" onclick="switchTab('home')">
+                    <i class="fa-brands fa-apple"></i> <span>Andijon</span>
+                </a>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#" class="nav-link active" onclick="switchTab('home')">Home</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('shop'); filterCategory('iPhone')">iPhone</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('shop'); filterCategory('iPad')">iPad</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('shop'); filterCategory('MacBook')">MacBook</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('shop'); filterCategory('Apple Watch')">Apple Watch</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('shop'); filterCategory('AirPods')">AirPods</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('shop'); filterCategory('Accessories')">Accessories</a></li>
+                    <li><a href="#" class="nav-link discount-link" onclick="switchTab('discounts')">Chegirmalar</a></li>
+                    <li><a href="#" class="nav-link" onclick="switchTab('contact')">Aloqa</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <button class="nav-btn" id="searchBtn" title="Qidiruv"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="nav-btn" id="cartBtn" title="Savatcha">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span id="cartBadge">0</span>
+                    </button>
+                    <button class="nav-btn user-btn" id="userBtn" title="Kirish / Ro‘yxatdan o‘tish">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="userNameDisplay">Kirish</span>
+                    </button>
+                    <div class="hamburger" id="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SEARCH MODAL -->
+    <div class="modal" id="searchModal">
+        <div class="modal-content search-modal-content">
+            <span class="close-modal" id="closeSearch">&times;</span>
+            <h2>Mahsulotlarni qidirish</h2>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Masalan: iPhone 17 Pro, MacBook Pro...">
+                <button id="searchActionBtn"><i class="fa-solid fa-search"></i></button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- CART MODAL -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content cart-modal-content">
+            <span class="close-modal" id="closeCart">&times;</span>
+            <h2>Savatcha</h2>
+            <div class="cart-items-container" id="cartItemsContainer">
+                <!-- Cart items will be loaded via JS -->
+            </div>
+            <div class="cart-summary" id="cartSummary">
+                <div class="summary-row">
+                    <span>Umumiy narx:</span>
+                    <span id="cartSubtotal">0 so'm</span>
+                </div>
+                <div class="summary-row">
+                    <span>Chegirma:</span>
+                    <span id="cartDiscount">0 so'm</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Yakuniy narx:</span>
+                    <span id="cartTotal">0 so'm</span>
+                </div>
+                <button class="btn-primary checkout-btn" onclick="openCheckoutModal()">Buyurtma berish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL (LOGIN / REGISTER) -->
+    <div class="modal" id="authModal">
+        <div class="modal-content auth-modal-content">
+            <span class="close-modal" id="closeAuth">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="loginTabBtn" onclick="switchAuthTab('login')">Kirish</button>
+                <button class="auth-tab-btn" id="registerTabBtn" onclick="switchAuthTab('register')">Ro‘yxatdan o‘tish</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+                <h3>Tizimga kirish</h3>
+                <div class="form-group">
+                    <label>Email yoki Telefon raqam</label>
+                    <input type="text" id="loginEmail" required placeholder="name@example.com yoki +998...">
+                    <small class="error-msg" id="loginEmailError"></small>
+                </div>
+                <div class="form-group">
+                    <label>Parol</label>
+                    <input type="password" id="loginPassword" required placeholder="********">
+                    <small class="error-msg" id="loginPasswordError"></small>
+                </div>
+                <button type="submit" class="btn-primary">Kirish</button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+                <h3>Yangi аккаунт ochish</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ism</label>
+                        <input type="text" id="regFirstname" required placeholder="Ismingiz">
+                    </div>
+                    <div class="form-group">
+                        <label>Familiya</label>
+                        <input type="text" id="regLastname" required placeholder="Familiyangiz">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Telefon raqam</label>
+                    <input type="tel" id="regPhone" required placeholder="+998 90 123 45 67">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Parol</label>
+                    <input type="password" id="regPassword" required placeholder="Kamida 6 ta belgi">
+                </div>
+                <div class="form-group">
+                    <label>Parolni tasdiqlash</label>
+                    <input type="password" id="regConfirmPassword" required placeholder="Parolni takrorlang">
+                    <small class="error-msg" id="regPasswordError"></small>
+                </div>
+                <button type="submit" class="btn-primary">Ro‘yxatdan o‘tish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content checkout-modal-content">
+            <span class="close-modal" id="closeCheckout">&times;</span>
+            <h2>Buyurtmani Rasmiylashtirish</h2>
+            <form id="checkoutForm" onsubmit="submitOrder(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ism va Familiya</label>
+                        <input type="text" id="chkName" required placeholder="Anvar Valiyev">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon raqam</label>
+                        <input type="tel" id="chkPhone" required placeholder="+998 90 123 45 67">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Viloyat</label>
+                        <select id="chkRegion" required>
+                            <option value="Andijon viloyati" selected>Andijon viloyati</option>
+                            <option value="Farg'ona viloyati">Farg'ona viloyati</option>
+                            <option value="Namangan viloyati">Namangan viloyati</option>
+                            <option value="Toshkent shahri">Toshkent shahri</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Shahar / Tuman</label>
+                        <input type="text" id="chkCity" required placeholder="Andijon shahri">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Yetkazib berish aniq manzili</label>
+                    <input type="text" id="chkAddress" required placeholder="Boburshoh ko'chasi, 15-uy">
+                </div>
+                <div class="checkout-order-summary">
+                    <h4>Buyurtma tarkibi:</h4>
+                    <div id="checkoutItemsList"></div>
+                    <div class="checkout-total-price">Jami to‘lov: <span id="chkTotalPrice">0 so'm</span></div>
+                </div>
+                <button type="submit" class="btn-primary">Buyurtmani Tasdiqlash</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-modal-content text-center">
+            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h2>Buyurtmangiz qabul qilindi!</h2>
+            <p>Rahmat! Sizning buyurtmangiz muvaffaqiyatli ro‘yxatga olindi. Operatorlarimiz tez orada siz bilan bog‘lanishadi.</p>
+            <button class="btn-primary" onclick="closeSuccessModal()">Asosiy sahifaga qaytish</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER / TABS -->
+    <main id="mainContent">
+
+        <!-- TAB 1: HOME -->
+        <section id="tab-home" class="tab-content active">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>iPhone 17 Pro</h1>
+                    <p>Titanium dizayn. A19 Pro chip. Kelajak Andijonda.</p>
+                    <div class="hero-btns">
+                        <button class="btn-apple-white" onclick="switchTab('shop'); filterCategory('iPhone')">Sotib olish</button>
+                        <button class="btn-apple-outline" onclick="openProductDetail(1)">Batafsil</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=1000&q=80" alt="iPhone 17 Pro">
+                </div>
+            </div>
+
+            <!-- Secondary Hero Subgrid -->
+            <div class="sub-hero-grid">
+                <div class="sub-hero-card" style="background: #000; color: #fff;">
+                    <h2>MacBook Pro</h2>
+                    <p>M4 protsessori quvvati endi siz bilan.</p>
+                    <button class="btn-apple-white" onclick="switchTab('shop'); filterCategory('MacBook')">Ko'rish</button>
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="MacBook">
+                </div>
+                <div class="sub-hero-card" style="background: #f5f5f7; color: #000;">
+                    <h2>Apple Watch Ultra 2</h2>
+                    <p>Ekstremal sarguzashtlar uchun mukammal hamroh.</p>
+                    <button class="btn-apple-dark" onclick="switchTab('shop'); filterCategory('Apple Watch')">Ko'rish</button>
+                    <img src="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=800&q=80" alt="Apple Watch">
+                </div>
+            </div>
+
+            <!-- Trending Products Section -->
+            <div class="container section-padding">
+                <div class="section-title">
+                    <h2>Ommabop Mahsulotlar</h2>
+                    <a href="#" onclick="switchTab('shop')">Barchasini ko'rish <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+                <div class="product-grid" id="trendingGrid">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SHOP / CATALOG -->
+        <section id="tab-shop" class="tab-content">
+            <div class="container section-padding">
+                <h1 class="page-main-title">Apple Store Katalogi</h1>
+                
+                <!-- Filters & Controls Bar -->
+                <div class="filter-controls">
+                    <div class="category-filters" id="categoryFilters">
+                        <button class="filter-chip active" onclick="filterCategory('All')">Barchasi</button>
+                        <button class="filter-chip" onclick="filterCategory('iPhone')">iPhone</button>
+                        <button class="filter-chip" onclick="filterCategory('iPad')">iPad</button>
+                        <button class="filter-chip" onclick="filterCategory('MacBook')">MacBook</button>
+                        <button class="filter-chip" onclick="filterCategory('Apple Watch')">Apple Watch</button>
+                        <button class="filter-chip" onclick="filterCategory('AirPods')">AirPods</button>
+                        <button class="filter-chip" onclick="filterCategory('Accessories')">Accessories</button>
+                    </div>
+                    <div class="sort-box">
+                        <select id="sortSelect" onchange="sortProducts()">
+                            <option value="default">Saralash: Standart</option>
+                            <option value="price-low">Arzonroq</option>
+                            <option value="price-high">Qimmatroq</option>
+                            <option value="newest">Eng yangi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="shop-grid" id="shopGrid">
+                    <!-- Products loaded via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: PRODUCT DETAIL -->
+        <section id="tab-detail" class="tab-content">
+            <div class="container section-padding" id="productDetailContainer">
+                <!-- Detailed product rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 4: DISCOUNTS -->
+        <section id="tab-discounts" class="tab-content">
+            <div class="container section-padding">
+                <div class="discount-banner">
+                    <h2>Maxsus Chegirmalar va Aksiyalar</h2>
+                    <p>Andijon filialining ochilishiga bag'ishlangan super chegirmalar! Shoshiling, vaqt chegaralangan.</p>
+                    <div class="countdown-timer" id="countdownTimer">
+                        <div class="time-box"><span id="days">03</span><p>Kun</p></div>
+                        <div class="time-box"><span id="hours">12</span><p>Soat</p></div>
+                        <div class="time-box"><span id="minutes">45</span><p>Daqiqa</p></div>
+                        <div class="time-box"><span id="seconds">30</span><p>Soniya</p></div>
+                    </div>
+                </div>
+                <div class="product-grid" id="discountGrid">
+                    <!-- Discount products loaded via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: CONTACT -->
+        <section id="tab-contact" class="tab-content">
+            <div class="container section-padding">
+                <h1 class="page-main-title">Biz bilan bog‘lanish</h1>
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <h3>Andijon Apple Store Do‘koni</h3>
+                        <p><i class="fa-solid fa-location-dot"></i> <strong>Manzil:</strong> Andijon shahri markazi, Boburshoh ko'chasi, 45-uy (Mo'ljal: Eski shahar tuman hokimiyati yonida)</p>
+                        <p><i class="fa-solid fa-phone"></i> <strong>Telefon:</strong> +998 (74) 223-00-00, +998 (90) 555-77-88</p>
+                        <p><i class="fa-solid fa-clock"></i> <strong>Ish vaqti:</strong> Har kuni 09:00 dan 21:00 gacha</p>
+                        <p><i class="fa-solid fa-envelope"></i> <strong>Email:</strong> info@applestore-andijan.uz</p>
+                        
+                        <div class="social-links">
+                            <a href="https://t.me" target="_blank" class="social-icon telegram"><i class="fa-brands fa-telegram"></i> Telegram</a>
+                            <a href="https://instagram.com" target="_blank" class="social-icon instagram"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                        </div>
+                    </div>
+                    <div class="contact-map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24241.67084534839!2d72.3333!3d40.7833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bc933333333333%3A0x3333333333333333!2sAndijan%2C%20Uzbekistan!5e0!3m2!1sen!2s!4v1650000000000!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Apple Store Andijon</h3>
+                    <p>Andijon shahridagi eng yirik va ishonchli rasmiy kafolatlangan Apple mahsulotlari do‘koni.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Kategoriyalar</h4>
+                    <ul>
+                        <li><a href="#" onclick="switchTab('shop'); filterCategory('iPhone')">iPhone</a></li>
+                        <li><a href="#" onclick="switchTab('shop'); filterCategory('iPad')">iPad</a></li>
+                        <li><a href="#" onclick="switchTab('shop'); filterCategory('MacBook')">MacBook</a></li>
+                        <li><a href="#" onclick="switchTab('shop'); filterCategory('Apple Watch')">Apple Watch</a></li>
+                        <li><a href="#" onclick="switchTab('shop'); filterCategory('AirPods')">AirPods</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Tezkor havolalar</h4>
+                    <ul>
+                        <li><a href="#" onclick="switchTab('discounts')">Chegirmalar</a></li>
+                        <li><a href="#" onclick="switchTab('contact')">Aloqa va Manzil</a></li>
+                        <li><a href="#" onclick="openAuthModal()">Kirish / Ro'yxatdan o'tish</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Bizni kuzating</h4>
+                    <p>Yangiliklardan xabardor bo'ling va eksklyuziv takliflarni qo'ldan boy bermang.</p>
+                    <div class="footer-socials">
+                        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Apple Store Andijon. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Files -->
+    <script src="./app.js"></script>
+</body>
+</html>
